@@ -1,12 +1,14 @@
-package com.sparta.msa_exam.auth.core;
+package com.sparta.msa_exam.auth.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "users")

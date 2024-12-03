@@ -1,6 +1,8 @@
-package com.sparta.msa_exam.auth;
+package com.sparta.msa_exam.auth.service;
 
-import com.sparta.msa_exam.auth.core.User;
+import com.sparta.msa_exam.auth.dto.SignUpRequestDto;
+import com.sparta.msa_exam.auth.entity.User;
+import com.sparta.msa_exam.auth.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -39,12 +41,17 @@ public class AuthService {
                 .issuer(issuer)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + accessExpiration))
-                .signWith(secretKey) // SecretKey만 사용
+                .signWith(secretKey, io.jsonwebtoken.SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    public User signUp(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User signUp(SignUpRequestDto requestDto) {
+        User user = User.builder()
+                .userId(requestDto.getUserId())
+                .username(requestDto.getUsername())
+                .password(passwordEncoder.encode(requestDto.getPassword()))
+                .role(requestDto.getRole())
+                .build();
         return userRepository.save(user);
     }
 
